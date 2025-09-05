@@ -1,7 +1,7 @@
 import {Plugin} from '../Plugin';
 import Item from './Item';
 
-interface Category {
+export interface Category {
   name: string;
   description?: string;
   url: string;

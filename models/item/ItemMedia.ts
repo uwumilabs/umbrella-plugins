@@ -1,6 +1,6 @@
 import MediaType from '../media/MediaType';
 
-interface ItemMedia {
+export interface ItemMedia {
   id: string;
   name?: string;
   description?: string;

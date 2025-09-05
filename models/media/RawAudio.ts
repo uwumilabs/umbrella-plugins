@@ -1,6 +1,6 @@
 import MediaType from './MediaType';
 
-interface RawAudio {
+export interface RawAudio {
   type: MediaType.RawAudio;
   url: string;
   name: string;

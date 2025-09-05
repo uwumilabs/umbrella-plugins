@@ -1,4 +1,4 @@
-enum SourceType {
+export enum SourceType {
   Audio = 'Audio',
   Image = 'Image',
   Live = 'Live',

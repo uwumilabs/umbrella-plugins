@@ -1,7 +1,7 @@
 import {Plugin} from '../Plugin';
 import Item from './Item';
 
-interface Genre {
+export interface Genre {
   id: string;
   name: string;
   description?: string | undefined;

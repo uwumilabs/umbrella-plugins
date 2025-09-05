@@ -1,6 +1,6 @@
 import MediaType from './MediaType';
 
-interface RawVideo {
+export interface RawVideo {
   type: MediaType.RawVideo;
   url: string;
   name: string;

@@ -1,54 +1,43 @@
-// Include ts-nocheck here if using modules that arent builtin
-// to node and will live in the app's sandbox
-// Modules included in the sandbox:
-// - crypto-js (CryptoJS)
-// - cheerio (Cheerio)
-// You can use the modules above in this file via the name in parenthesis.
-// You should only import built-in nodejs modules in this file with "require".
-// !!WARNING!! You have to run "yarn install" and "npx tsc" in the nodejs-project folder.
-// Example:
-//   const $ = Cheerio.load(response);
-//   const title = $('title').text();
-//   var secret_key = CryptoJS.SHA256(title);
-//   throw new Error(`${title} - ${secret_key}`); // This will throw an error in the app
+// @ts-nocheck
+import type { Plugin } from "../../models/Plugin";
+import ContentService from "../../models/ContentService";
+import type Category from "../../models/item/Category";
+import type DetailedItem from "../../models/item/DetailedItem";
+import type RawAudio from "../../models/media/RawAudio";
+import type RawVideo from "../../models/media/RawVideo";
+import SourceType from "../../models/source/SourceType";
+import manifest from "./ExamplePluginManifest.json";
 
-//This is an example plugin. Do not use in production.
-// Functions' return types are placeholders
-// Actual types are in models/ folder
-// Refer to models/ContentService.ts
-class ExamplePlugin {
-  async search(query: string, page?: number) {
-    return {};
+class ExamplePlugin implements ContentService {
+  sourceType: SourceType = SourceType.Video;
+  author = manifest.author;
+  name = manifest.name;
+  version = manifest.version;
+  description = manifest.description;
+  homePageUrl = manifest.homePageUrl;
+  iconUrl = manifest.iconUrl;
+  pluginUrl = manifest.pluginUrl;
+  manifestUrl = manifest.manifestUrl;
+
+  async search(query: string, page?: number): Promise<Category> {
+    return null;
   }
 
-  async getCategory(category: string, page?: number): Promise<object> {
-    return {};
+  async getCategory(category: string, page?: number): Promise<Category> {
+    return null;
   }
 
-  async getHomeCategories(): Promise<object[]> {
+  async getHomeCategories(): Promise<Category[]> {
     return [];
   }
 
-  async getItemDetails(id: string): Promise<object> {
-    return {};
+  async getItemDetails(id: string): Promise<DetailedItem> {
+    return null;
   }
 
-  async getItemMedia(id: string): Promise<object[]> {
+  async getItemMedia(id: string): Promise<(RawAudio | RawVideo)[]> {
     return [];
   }
 }
 
-module.exports = {
-  search: async (query: string, page?: number): Promise<object> =>
-    new ExamplePlugin().search(query, page),
-  getCategory: async (category: string, page?: number): Promise<object> =>
-    new ExamplePlugin().getCategory(category, page),
-  getHomeCategories: async (): Promise<object[]> =>
-    new ExamplePlugin().getHomeCategories(),
-  getItemDetails: async (id: string): Promise<object> =>
-    new ExamplePlugin().getItemDetails(id),
-  getItemMedia: async (id: string): Promise<object[]> =>
-    new ExamplePlugin().getItemMedia(id),
-};
-
-export default ExamplePlugin;
+export default new ExamplePlugin();

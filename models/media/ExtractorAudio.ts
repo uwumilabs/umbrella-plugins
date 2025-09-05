@@ -1,6 +1,6 @@
 import MediaType from './MediaType';
 
-interface ExtractorAudio {
+export interface ExtractorAudio {
   type: MediaType.ExtractorAudio;
   url: string;
   name: string;

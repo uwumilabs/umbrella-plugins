@@ -1,7 +1,7 @@
 import {Plugin} from '../Plugin';
 import SourceType from '../source/SourceType';
 
-interface Item {
+export interface Item {
   id: string;
   name: string;
   description?: string;

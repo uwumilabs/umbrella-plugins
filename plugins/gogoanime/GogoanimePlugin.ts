@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Include ts-nocheck here if using modules that arent builtin to node
 // Also delete any imports from this file. Use require() instead
 //This is an example plugin. Do not use in production.

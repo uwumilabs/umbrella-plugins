@@ -1,6 +1,6 @@
 import SourceType from './SourceType';
 
-interface Source {
+export interface Source {
   sourceType: SourceType;
   author?: string;
   name: string;

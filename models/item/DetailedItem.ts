@@ -4,7 +4,7 @@ import ItemMedia from './ItemMedia';
 import SourceType from '../source/SourceType';
 import {Plugin} from '../Plugin';
 
-interface DetailedItem extends Item {
+export interface DetailedItem extends Item {
   language: string;
   trailerUrl?: string;
   synopsis: string;

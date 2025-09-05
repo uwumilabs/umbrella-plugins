@@ -1,4 +1,4 @@
-enum MediaType {
+export enum MediaType {
   ExtractorVideo,
   RawVideo,
   ExtractorAudio,
