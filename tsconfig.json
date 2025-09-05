@@ -7,7 +7,7 @@
     "sourceMap": false,
     "rootDir": ".",
     "outDir": "dist",
-    "types": ["node"],
+    "types": ["node", "jest"],
     "skipLibCheck": true,
     "strict": true,
     "resolveJsonModule": true,
@@ -15,5 +15,5 @@
   },
   "lib": ["es2015"],
   "include": ["plugins/**/*", "models/**/*"],
-  "exclude": ["node_modules", "dist", "tests"]
+  "exclude": ["node_modules", "dist", "test"]
 }

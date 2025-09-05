@@ -17,14 +17,14 @@ class NineAnimePlugin implements ContentService {
   baseUrl = "https://9animetv.to";
 
   async search(query: string, page: number = 1) {
-    var baseUrl = this.baseUrl;
+    const baseUrl = this.baseUrl;
     const url = `${baseUrl}/search?keyword=${query}&page=${page || 1}`;
     const response = await fetch(url)
       .then((response) => response)
       .then((data) => data.text());
     if (!response) {
       throw new Error("No response from 9anime");
-    }
+    } 
     const $ = load(response);
     var items: Item[] = [];
     var index = 0;
@@ -75,7 +75,7 @@ class NineAnimePlugin implements ContentService {
 
     var categories: Category[] = [];
 
-    categories.push({
+    categories.push({ 
       name: "Featured",
       description: "9anime featured",
       url: url,
@@ -161,7 +161,7 @@ class NineAnimePlugin implements ContentService {
           !($(this).find("ul > li").length == 0) &&
           !($(this).attr("id") == undefined)
         ) {
-          var category: Partial<Category> = {};
+          const category: Partial<Category> = {};
           category["name"] = $(this)
             .attr("id")
             ?.split("-")
@@ -171,7 +171,7 @@ class NineAnimePlugin implements ContentService {
           category["isPaginated"] = false;
           category["items"] = $(this)
             .find("ul > li")
-            .map(function () {
+            .map(function () { 
               var item: Partial<Item> = {};
               item["id"] = $(this).find("a").attr("href")?.split("/")[2];
               item["name"] = $(this).find("a").text().trim();
@@ -290,7 +290,7 @@ class NineAnimePlugin implements ContentService {
       .text()
       .trim();
     const genres: Genre[] = [];
-
+ 
     const genresElement = metaInfos.filter(function () {
       return (
         $(this).find(".item-title").text().trim().toLowerCase() === "genre:"
@@ -312,7 +312,7 @@ class NineAnimePlugin implements ContentService {
       });
     }
 
-    var releaseDate;
+    let releaseDate;
     const releaseDateElement = metaInfos.filter(function () {
       return (
         $(this).find(".item-title").text().trim().toLowerCase() == "premiered:"
@@ -321,7 +321,7 @@ class NineAnimePlugin implements ContentService {
     if (releaseDateElement.length > 0) {
       releaseDate = releaseDateElement.find(".item-content").text().trim();
     }
-    var rating;
+    let rating;
     const ratingElement = metaInfos.filter(function () {
       return (
         $(this).find(".item-title").text().trim().toLowerCase() == "scores:"
@@ -330,7 +330,7 @@ class NineAnimePlugin implements ContentService {
     if (ratingElement.length > 0) {
       rating = parseFloat(ratingElement.find(".item-content").text().trim());
     }
-    var creators;
+    let creators;
     const creatorsElement = metaInfos.filter(function () {
       return (
         $(this).find(".item-title").text().trim().toLowerCase() == "studios:"
@@ -339,7 +339,7 @@ class NineAnimePlugin implements ContentService {
     if (creatorsElement.length > 0) {
       creators = [creatorsElement.find(".item-content").text().trim()];
     }
-    var status;
+    let status;
     const statusElement = metaInfos.filter(function () {
       return (
         $(this).find(".item-title").text().trim().toLowerCase() == "status:"
@@ -348,7 +348,7 @@ class NineAnimePlugin implements ContentService {
     if (statusElement.length > 0) {
       status = statusElement.find(".item-content").text().trim();
     }
-    var otherNames = $(".alias").text().trim().split(", ");
+    const otherNames = $(".alias").text().trim().split(", ");
 
     var episodes: ItemMedia[] = [];
     const episodeResponse = await fetch(
@@ -410,7 +410,7 @@ class NineAnimePlugin implements ContentService {
         };
       }
     );
-    var sources: ExtractorVideo[] = [];
+    const sources: ExtractorVideo[] = [];
     for (const server of servers) {
       var source: Partial<ExtractorVideo> = {};
       const serverUrl = `${baseUrl}/ajax/episode/sources?id=${server.id}`;
@@ -432,6 +432,7 @@ class NineAnimePlugin implements ContentService {
   }
 }
 
+// export default NineAnimePlugin;
 module.exports = {
   search: async (query: string, page?: number): Promise<object> =>
     new NineAnimePlugin().search(query, page),
@@ -443,16 +444,15 @@ module.exports = {
     new NineAnimePlugin().getItemMedia(id),
 };
 
-export default NineAnimePlugin;
 
-(async () => {
-  const anime= new NineAnimePlugin();
-  const search= await anime.search("dandadan");
-  // console.log(search);
-  // const home= await anime.getHomeCategories();
-  // console.log(home);
-  const details= await anime.getItemDetails(search.items[0].id);
-  // console.log(details);
-  const media= await anime.getItemMedia(details.media[0].id);
-  console.log(media);
-})();
+// (async () => {
+//   const anime= new NineAnimePlugin();
+//   const search= await anime.search("dandadan");
+//   console.log(search);
+//   // const home= await anime.getHomeCategories();
+//   // console.log(home);
+//   const details= await anime.getItemDetails(search.items[0].id);
+//   // console.log(details);
+//   const media= await anime.getItemMedia(details.media[0].id);
+//   // console.log(media);
+// })();
