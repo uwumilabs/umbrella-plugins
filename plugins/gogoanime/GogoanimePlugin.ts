@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @ts-nocheck
 // Include ts-nocheck here if using modules that arent builtin to node
 // Also delete any imports from this file. Use require() instead
@@ -6,15 +7,15 @@
 // Actual types are in models/ folder
 // Refer to models/ContentService.ts
 
-import { Cheerio, CheerioAPI } from "cheerio";
+import { Cheerio, CheerioAPI } from 'cheerio';
 
-const cheerio = require("cheerio");
+const cheerio = require('cheerio');
 
-var buffer = require("buffer").Buffer;
+var buffer = require('buffer').Buffer;
 class GogoanimePlugin {
-  baseUrl = "https://gogoanimez.to";
+  baseUrl = 'https://gogoanimez.to';
   // ajaxUrl = 'https://ajax.gogocdn.net';
-  sourceType = "Video";
+  sourceType = 'Video';
   async search(query, page) {
     try {
       const pageNum = page || 1;
@@ -31,23 +32,23 @@ class GogoanimePlugin {
       const $ = Cheerio.load(response);
 
       var items = [];
-      $(".bs").each(function () {
+      $('.bs').each(function () {
         var item = {};
-        item["id"] = $(this).find("a").attr("href").split("/")[
-          $(this).find("a").attr("href").split("/").length - 2
+        item['id'] = $(this).find('a').attr('href').split('/')[
+          $(this).find('a').attr('href').split('/').length - 2
         ];
         // throw new Error(`${item["id"]}`);
-        item["name"] = $(this).find("div.tt").text().split("<")[0].trim();
-        item["description"] = $(this).find(".typez").text().trim();
-        item["imageUrl"] = $(this).find("img").attr("src");
-        item["url"] = $(this).find("a").attr("href").startsWith("/")
-          ? `${this.baseUrl}${$(this).find("a").attr("href")}`
-          : $(this).find("a").attr("href");
-        item["type"] = "Video";
+        item['name'] = $(this).find('div.tt').text().split('<')[0].trim();
+        item['description'] = $(this).find('.typez').text().trim();
+        item['imageUrl'] = $(this).find('img').attr('src');
+        item['url'] = $(this).find('a').attr('href').startsWith('/')
+          ? `${this.baseUrl}${$(this).find('a').attr('href')}`
+          : $(this).find('a').attr('href');
+        item['type'] = 'Video';
         items.push(item);
       });
       return {
-        name: "Gogoanime",
+        name: 'Gogoanime',
         description: `Search results for ${query}`,
         url: decodeURIComponent(`${this.baseUrl}/page/${pageNum}/?s=${query}`),
         isPaginated: true,
@@ -75,43 +76,43 @@ class GogoanimePlugin {
 
     var index = 0;
 
-    $(".bixbox")
+    $('.bixbox')
       .filter(function () {
-        return $(this).find("div.listupd") !== undefined;
+        return $(this).find('div.listupd') !== undefined;
       })
       .map(function () {
         var category = {};
-        category["name"] = $(this)
-          .find("div.releases")
+        category['name'] = $(this)
+          .find('div.releases')
           .children()
           .first()
           .text()
           .trim();
-        category["url"] = baseUrl;
-        category["isPaginated"] = false;
-        category["items"] = (($) => {
+        category['url'] = baseUrl;
+        category['isPaginated'] = false;
+        category['items'] = (($) => {
           var items = [];
           $(this)
-            .find("article.bs a")
+            .find('article.bs a')
             .each(function () {
               var item = {};
-              item["id"] = $(this)
-                .attr("href")
-                .split("/")
-                [$(this).attr("href").split("/").length - 2].split(
-                  /episode-([0-9]+)/
+              item['id'] = $(this)
+                .attr('href')
+                .split('/')
+                [$(this).attr('href').split('/').length - 2].split(
+                  /episode-([0-9]+)/,
                 )[0];
-              item["name"] = $(this)
-                .find("div.tt > h2")
+              item['name'] = $(this)
+                .find('div.tt > h2')
                 .text()
-                .split("Episode")[0]
+                .split('Episode')[0]
                 .trim();
-              item["description"] = $(this).find("div.bt > span").text().trim();
-              item["imageUrl"] = $(this).find("img").attr("src");
-              item["url"] = $(this).attr("href").startsWith("/")
-                ? `${baseUrl}${$(this).find("a").attr("href")}`
-                : $(this).find("a").attr("href");
-              item["type"] = "Video";
+              item['description'] = $(this).find('div.bt > span').text().trim();
+              item['imageUrl'] = $(this).find('img').attr('src');
+              item['url'] = $(this).attr('href').startsWith('/')
+                ? `${baseUrl}${$(this).find('a').attr('href')}`
+                : $(this).find('a').attr('href');
+              item['type'] = 'Video';
               items.push(item);
             });
           return items;
@@ -119,34 +120,34 @@ class GogoanimePlugin {
         categories.push(category);
       });
 
-    $(".series-gen ul.nav-tabs li").each(function () {
+    $('.series-gen ul.nav-tabs li').each(function () {
       var category = {};
-      category["name"] = $(this).find("a").text().trim();
-      category["url"] = baseUrl;
-      category["isPaginated"] = false;
-      category["items"] = (($) => {
+      category['name'] = $(this).find('a').text().trim();
+      category['url'] = baseUrl;
+      category['isPaginated'] = false;
+      category['items'] = (($) => {
         var items = [];
         $(`.series-gen div.listupd > div:nth-child(${$(this).index() + 1})`)
-          .find("article.bs a")
+          .find('article.bs a')
           .each(function () {
             var item = {};
-            item["id"] = $(this)
-              .attr("href")
-              .split("/")
-              [$(this).attr("href").split("/").length - 2].split(
-                /episode-([0-9]+)/
+            item['id'] = $(this)
+              .attr('href')
+              .split('/')
+              [$(this).attr('href').split('/').length - 2].split(
+                /episode-([0-9]+)/,
               )[0];
-            item["name"] = $(this)
-              .find("div.tt > h2")
+            item['name'] = $(this)
+              .find('div.tt > h2')
               .text()
-              .split("Episode")[0]
+              .split('Episode')[0]
               .trim();
-            item["description"] = $(this).find("div.bt > span").text().trim();
-            item["imageUrl"] = $(this).find("img").attr("src");
-            item["url"] = $(this).attr("href").startsWith("/")
-              ? `${baseUrl}${$(this).find("a").attr("href")}`
-              : $(this).find("a").attr("href");
-            item["type"] = "Video";
+            item['description'] = $(this).find('div.bt > span').text().trim();
+            item['imageUrl'] = $(this).find('img').attr('src');
+            item['url'] = $(this).attr('href').startsWith('/')
+              ? `${baseUrl}${$(this).find('a').attr('href')}`
+              : $(this).find('a').attr('href');
+            item['type'] = 'Video';
             items.push(item);
           });
         return items;
@@ -154,31 +155,31 @@ class GogoanimePlugin {
       categories.push(category);
     });
 
-    $("div.section:nth-child(1) ul.ts-wpop-nav-tabs li").each(function () {
+    $('div.section:nth-child(1) ul.ts-wpop-nav-tabs li').each(function () {
       var category = {};
-      category["name"] = $(this).find("span").text().trim();
-      category["url"] = baseUrl;
-      category["isPaginated"] = false;
-      category["items"] = (($) => {
+      category['name'] = $(this).find('span').text().trim();
+      category['url'] = baseUrl;
+      category['isPaginated'] = false;
+      category['items'] = (($) => {
         var items = [];
         $(
           `div.section:nth-child(1) div.serieslist:nth-child(${
             $(this).index() + 1
-          })`
+          })`,
         )
-          .find("ul li")
+          .find('ul li')
           .each(function () {
             var item = {};
-            item["id"] = $(this).find("h4 > a").attr("href").split("/")[
-              $(this).find("h4 > a").attr("href").split("/").length - 2
+            item['id'] = $(this).find('h4 > a').attr('href').split('/')[
+              $(this).find('h4 > a').attr('href').split('/').length - 2
             ];
-            item["name"] = $(this).find("h4 > a").text().trim();
-            item["description"] = $(this).find("div.ctr").text().trim();
-            item["imageUrl"] = $(this).find("img").attr("src");
-            item["url"] = $(this).find("h4 > a").attr("href").startsWith("/")
-              ? `${baseUrl}${$(this).find("h4 > a").attr("href")}`
-              : $(this).find("h4 > a").attr("href");
-            item["type"] = "Video";
+            item['name'] = $(this).find('h4 > a').text().trim();
+            item['description'] = $(this).find('div.ctr').text().trim();
+            item['imageUrl'] = $(this).find('img').attr('src');
+            item['url'] = $(this).find('h4 > a').attr('href').startsWith('/')
+              ? `${baseUrl}${$(this).find('h4 > a').attr('href')}`
+              : $(this).find('h4 > a').attr('href');
+            item['type'] = 'Video';
             items.push(item);
           });
         return items;
@@ -201,71 +202,71 @@ class GogoanimePlugin {
     // @ts-expect-error
     const $ = Cheerio.load(response);
 
-    const name = $("h1.entry-title").text().trim();
-    const description = $(".spe span")
+    const name = $('h1.entry-title').text().trim();
+    const description = $('.spe span')
       .filter(function () {
-        return $(this).find("b").text().includes("Type:");
+        return $(this).find('b').text().includes('Type:');
       })
       .first()
       .text()
-      .replace("Type:", "")
+      .replace('Type:', '')
       .trim();
-    const imageUrl = $(".thumb img").attr("src");
-    const language = "Unknown";
-    var synopsis = "";
-    $(".entry-content p").each(function () {
-      synopsis += $(this).text().trim() + "\n\n";
+    const imageUrl = $('.thumb img').attr('src');
+    const language = 'Unknown';
+    var synopsis = '';
+    $('.entry-content p').each(function () {
+      synopsis += $(this).text().trim() + '\n\n';
     });
     var genres = [];
-    $(".genxed a").each(function () {
+    $('.genxed a').each(function () {
       genres.push({
-        id: $(this).attr("href").split("/")[2],
+        id: $(this).attr('href').split('/')[2],
         name: $(this).text().trim(),
-        url: $(this).attr("href").startsWith("/")
-          ? baseUrl + $(this).attr("href")
-          : $(this).attr("href"),
+        url: $(this).attr('href').startsWith('/')
+          ? baseUrl + $(this).attr('href')
+          : $(this).attr('href'),
       });
     });
-    const releaseDate = $(".spe span")
+    const releaseDate = $('.spe span')
       .filter(function () {
-        return $(this).text().includes("Released:");
+        return $(this).text().includes('Released:');
       })
       .first()
       .text()
-      .replace("Released:", "")
+      .replace('Released:', '')
       .trim();
-    const creators = $(".spe span")
+    const creators = $('.spe span')
       .filter(function () {
-        return $(this).text().includes("Producers:");
+        return $(this).text().includes('Producers:');
       })
       .first()
-      .find("a")
+      .find('a')
       .map(function () {
         return $(this).text().trim();
       })
       .toArray();
-    const status = $(".spe span")
+    const status = $('.spe span')
       .filter(function () {
-        return $(this).text().includes("Status:");
+        return $(this).text().includes('Status:');
       })
       .first()
       .text()
-      .replace("Status:", "")
+      .replace('Status:', '')
       .trim();
 
     var episodes = [];
 
-    $(".eplister ul li a").each(function () {
+    $('.eplister ul li a').each(function () {
       episodes.push({
-        id: $(this).attr("href").split("/")[
-          $(this).attr("href").split("/").length - 2
+        id: $(this).attr('href').split('/')[
+          $(this).attr('href').split('/').length - 2
         ],
-        name: $(this).find(".epl-title").text().trim(),
-        url: $(this).attr("href").startsWith("/")
-          ? baseUrl + $(this).attr("href")
-          : $(this).attr("href"),
+        name: $(this).find('.epl-title').text().trim(),
+        url: $(this).attr('href').startsWith('/')
+          ? baseUrl + $(this).attr('href')
+          : $(this).attr('href'),
         language: language,
-        number: Number($(this).find(".epl-num").text().trim()),
+        number: Number($(this).find('.epl-num').text().trim()),
       });
     });
 
@@ -302,7 +303,7 @@ class GogoanimePlugin {
       const sourceRegex = /<iframe[\s\S]*?src="(.*?)"/;
       const source = rawSourceResponse.match(sourceRegex)[1];
       sources.push({
-        type: "ExtractorVideo",
+        type: 'ExtractorVideo',
         url: source,
         name: rawSource[2].trim(),
       });

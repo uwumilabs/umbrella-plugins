@@ -1,20 +1,18 @@
-import { type CheerioAPI, load } from "cheerio";
-import { SourceType } from "../../models/source/SourceType";
-import { MediaType } from "../../models/media/MediaType";
+import { type CheerioAPI, load } from 'cheerio';
+import { SourceType } from '../../models/source/SourceType';
+import { MediaType } from '../../models/media/MediaType';
 import type {
   Category,
   DetailedItem,
   ItemMedia,
   Item,
-  RawAudio,
-  RawVideo,
   ContentService,
   Genre,
   ExtractorVideo,
-} from "../../models";
+} from '../../models';
 
 class NineAnimePlugin implements ContentService {
-  baseUrl = "https://9animetv.to";
+  baseUrl = 'https://9animetv.to';
 
   async search(query: string, page: number = 1) {
     const baseUrl = this.baseUrl;
@@ -23,30 +21,30 @@ class NineAnimePlugin implements ContentService {
       .then((response) => response)
       .then((data) => data.text());
     if (!response) {
-      throw new Error("No response from 9anime");
-    } 
+      throw new Error('No response from 9anime');
+    }
     const $ = load(response);
     var items: Item[] = [];
     var index = 0;
-    $(".flw-item").each(function () {
+    $('.flw-item').each(function () {
       var item: Partial<Item> = {};
-      item["id"] = $(this).find("a").attr("href")?.split("/")[2];
-      item["name"] = $(this).find(".dynamic-name").text().trim();
-      item["description"] = $(
+      item['id'] = $(this).find('a').attr('href')?.split('/')[2];
+      item['name'] = $(this).find('.dynamic-name').text().trim();
+      item['description'] = $(
         `#qtip-${index}-content > div:nth-child(1) > div:nth-child(7)`
       )
         .text()
         .trim();
-      item["imageUrl"] = $(this).find("img").attr("data-src");
-      item["url"] = $(this).find("a").attr("href")?.startsWith("/")
-        ? `${baseUrl}${$(this).find("a").attr("href")}`
-        : $(this).find("a").attr("href");
-      item["type"] = SourceType.Video;
+      item['imageUrl'] = $(this).find('img').attr('data-src');
+      item['url'] = $(this).find('a').attr('href')?.startsWith('/')
+        ? `${baseUrl}${$(this).find('a').attr('href')}`
+        : $(this).find('a').attr('href');
+      item['type'] = SourceType.Video;
       items.push(item as Item);
       index++;
     });
     return {
-      name: "9anime",
+      name: '9anime',
       description: `Search results for ${query}`,
       url: url,
       isPaginated: true,
@@ -75,36 +73,36 @@ class NineAnimePlugin implements ContentService {
 
     var categories: Category[] = [];
 
-    categories.push({ 
-      name: "Featured",
-      description: "9anime featured",
+    categories.push({
+      name: 'Featured',
+      description: '9anime featured',
       url: url,
       isPaginated: false,
       items: (($: CheerioAPI) => {
         var items: Item[] = [];
-        $("#slider > div:nth-child(1) > div.swiper-slide").each(function () {
+        $('#slider > div:nth-child(1) > div.swiper-slide').each(function () {
           var item: Partial<Item> = {};
-          item["id"] = $(this)
-            .find("div.desi-head-title > a")
-            .attr("href")
-            ?.split("/")[2]!;
-          item["name"] = $(this).find("div.desi-head-title > a").text().trim();
-          item["description"] = $(this)
-            .find("div.desi-description")
+          item['id'] = $(this)
+            .find('div.desi-head-title > a')
+            .attr('href')
+            ?.split('/')[2]!;
+          item['name'] = $(this).find('div.desi-head-title > a').text().trim();
+          item['description'] = $(this)
+            .find('div.desi-description')
             .text()
             .trim();
-          item["imageUrl"] = $(this).find("img").attr("src")?.startsWith("/")
-            ? `${baseUrl}${$(this).find("img").attr("src")}`
-            : $(this).find("img").attr("src");
-          item["url"] = $(this)
-            .find("div.desi-head-title > a")
-            .attr("href")
-            ?.startsWith("/")
+          item['imageUrl'] = $(this).find('img').attr('src')?.startsWith('/')
+            ? `${baseUrl}${$(this).find('img').attr('src')}`
+            : $(this).find('img').attr('src');
+          item['url'] = $(this)
+            .find('div.desi-head-title > a')
+            .attr('href')
+            ?.startsWith('/')
             ? `${baseUrl}${$(this)
-                .find("div.desi-head-title > a")
-                .attr("href")}`
-            : $(this).find("div.desi-head-title > a").attr("href");
-          item["type"] = SourceType.Video;
+                .find('div.desi-head-title > a')
+                .attr('href')}`
+            : $(this).find('div.desi-head-title > a').attr('href');
+          item['type'] = SourceType.Video;
           items.push(item as Item);
         });
         return items;
@@ -112,11 +110,11 @@ class NineAnimePlugin implements ContentService {
     });
 
     categories.push({
-      name: $(".block_area-header-tabs > div:nth-child(1) > h2:nth-child(1)")
+      name: $('.block_area-header-tabs > div:nth-child(1) > h2:nth-child(1)')
         .text()
         .trim(),
       description: `9anime ${$(
-        ".block_area-header-tabs > div:nth-child(1) > h2:nth-child(1)"
+        '.block_area-header-tabs > div:nth-child(1) > h2:nth-child(1)'
       )
         .text()
         .trim()}`,
@@ -124,30 +122,30 @@ class NineAnimePlugin implements ContentService {
       isPaginated: false,
       items: (($: CheerioAPI) => {
         var items: Item[] = [];
-        $(".film_list-wrap > div.flw-item").each(function () {
+        $('.film_list-wrap > div.flw-item').each(function () {
           var item: Partial<Item> = {};
-          item["id"] = $(this)
-            .find("h3.film-name > a")
-            .attr("href")
-            ?.split("/")[2];
-          item["name"] = $(this).find("h3.film-name > a").text().trim();
-          item["description"] = $(this)
-            .find("div.film-poster > div.tick-item")
+          item['id'] = $(this)
+            .find('h3.film-name > a')
+            .attr('href')
+            ?.split('/')[2];
+          item['name'] = $(this).find('h3.film-name > a').text().trim();
+          item['description'] = $(this)
+            .find('div.film-poster > div.tick-item')
             .text()
             .trim();
-          item["imageUrl"] = $(this)
-            .find("img")
-            .attr("data-src")
-            ?.startsWith("/")
-            ? `${baseUrl}${$(this).find("img").attr("data-src")}`
-            : $(this).find("img").attr("data-src");
-          item["url"] = $(this)
-            .find("h3.film-name > a")
-            .attr("href")
-            ?.startsWith("/")
-            ? `${baseUrl}${$(this).find("h3.film-name > a").attr("href")}`
-            : $(this).find("h3.film-name > a").attr("href");
-          item["type"] = SourceType.Video;
+          item['imageUrl'] = $(this)
+            .find('img')
+            .attr('data-src')
+            ?.startsWith('/')
+            ? `${baseUrl}${$(this).find('img').attr('data-src')}`
+            : $(this).find('img').attr('data-src');
+          item['url'] = $(this)
+            .find('h3.film-name > a')
+            .attr('href')
+            ?.startsWith('/')
+            ? `${baseUrl}${$(this).find('h3.film-name > a').attr('href')}`
+            : $(this).find('h3.film-name > a').attr('href');
+          item['type'] = SourceType.Video;
           items.push(item as Item);
         });
         return items;
@@ -156,39 +154,39 @@ class NineAnimePlugin implements ContentService {
 
     function parseMultiCategory($: CheerioAPI): Category[] {
       var categories: Category[] = [];
-      $("div.tab-content > div").each(function () {
+      $('div.tab-content > div').each(function () {
         if (
-          !($(this).find("ul > li").length == 0) &&
-          !($(this).attr("id") == undefined)
+          !($(this).find('ul > li').length == 0) &&
+          !($(this).attr('id') == undefined)
         ) {
           const category: Partial<Category> = {};
-          category["name"] = $(this)
-            .attr("id")
-            ?.split("-")
+          category['name'] = $(this)
+            .attr('id')
+            ?.split('-')
             .map((item) => item.charAt(0).toUpperCase() + item.slice(1))
-            .join(" ");
-          category["url"] = url;
-          category["isPaginated"] = false;
-          category["items"] = $(this)
-            .find("ul > li")
-            .map(function () { 
+            .join(' ');
+          category['url'] = url;
+          category['isPaginated'] = false;
+          category['items'] = $(this)
+            .find('ul > li')
+            .map(function () {
               var item: Partial<Item> = {};
-              item["id"] = $(this).find("a").attr("href")?.split("/")[2];
-              item["name"] = $(this).find("a").text().trim();
-              item["description"] = $(this)
-                .find("div.fiml-number > span")
+              item['id'] = $(this).find('a').attr('href')?.split('/')[2];
+              item['name'] = $(this).find('a').text().trim();
+              item['description'] = $(this)
+                .find('div.fiml-number > span')
                 .text()
                 .trim();
-              item["imageUrl"] = $(this)
-                .find("img")
-                .attr("data-src")
-                ?.startsWith("/")
-                ? `${baseUrl}${$(this).find("img").attr("data-src")}`
-                : $(this).find("img").attr("data-src");
-              item["url"] = $(this).find("a").attr("href")?.startsWith("/")
-                ? `${baseUrl}${$(this).find("a").attr("href")}`
-                : $(this).find("a").attr("href");
-              item["type"] = SourceType.Video;
+              item['imageUrl'] = $(this)
+                .find('img')
+                .attr('data-src')
+                ?.startsWith('/')
+                ? `${baseUrl}${$(this).find('img').attr('data-src')}`
+                : $(this).find('img').attr('data-src');
+              item['url'] = $(this).find('a').attr('href')?.startsWith('/')
+                ? `${baseUrl}${$(this).find('a').attr('href')}`
+                : $(this).find('a').attr('href');
+              item['type'] = SourceType.Video;
               return item as Item;
             })
             .get();
@@ -202,12 +200,12 @@ class NineAnimePlugin implements ContentService {
 
     categories.push({
       name: $(
-        "section.block_area_sidebar:nth-child(3) > div:nth-child(1) > div:nth-child(1) > h2:nth-child(1)"
+        'section.block_area_sidebar:nth-child(3) > div:nth-child(1) > div:nth-child(1) > h2:nth-child(1)'
       )
         .text()
         .trim(),
       description: `9anime ${$(
-        "section.block_area_sidebar:nth-child(3) > div:nth-child(1) > div:nth-child(1) > h2:nth-child(1)"
+        'section.block_area_sidebar:nth-child(3) > div:nth-child(1) > div:nth-child(1) > h2:nth-child(1)'
       )
         .text()
         .trim()}`,
@@ -216,28 +214,28 @@ class NineAnimePlugin implements ContentService {
       items: (($: CheerioAPI) => {
         var items: Item[] = [];
         $(
-          "section.block_area_sidebar:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > ul:nth-child(1) > li"
+          'section.block_area_sidebar:nth-child(3) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > ul:nth-child(1) > li'
         ).each(function () {
           var item: Partial<Item> = {};
-          item["id"] = $(this)
-            .find("h3.film-name > a")
-            .attr("href")
-            ?.split("/")[2];
-          item["name"] = $(this).find("h3.film-name > a").text().trim();
-          item["description"] = $(this).find("span.fdi-item").text().trim();
-          item["imageUrl"] = $(this)
-            .find("img")
-            .attr("data-src")
-            ?.startsWith("/")
-            ? `${baseUrl}${$(this).find("img").attr("data-src")}`
-            : $(this).find("img").attr("data-src");
-          item["url"] = $(this)
-            .find("h3.film-name > a")
-            .attr("href")
-            ?.startsWith("/")
-            ? `${baseUrl}${$(this).find("h3.film-name > a").attr("href")}`
-            : $(this).find("h3.film-name > a").attr("href");
-          item["type"] = SourceType.Video;
+          item['id'] = $(this)
+            .find('h3.film-name > a')
+            .attr('href')
+            ?.split('/')[2];
+          item['name'] = $(this).find('h3.film-name > a').text().trim();
+          item['description'] = $(this).find('span.fdi-item').text().trim();
+          item['imageUrl'] = $(this)
+            .find('img')
+            .attr('data-src')
+            ?.startsWith('/')
+            ? `${baseUrl}${$(this).find('img').attr('data-src')}`
+            : $(this).find('img').attr('data-src');
+          item['url'] = $(this)
+            .find('h3.film-name > a')
+            .attr('href')
+            ?.startsWith('/')
+            ? `${baseUrl}${$(this).find('h3.film-name > a').attr('href')}`
+            : $(this).find('h3.film-name > a').attr('href');
+          item['type'] = SourceType.Video;
           items.push(item as Item);
         });
         return items;
@@ -255,55 +253,55 @@ class NineAnimePlugin implements ContentService {
       .then((data) => data.text());
 
     if (!response) {
-      throw new Error("No response from 9anime");
+      throw new Error('No response from 9anime');
     }
 
     const $ = load(response);
-    const name = $("h2.film-name").text().trim();
+    const name = $('h2.film-name').text().trim();
     const imageUrl = $(
-      ".anime-poster > div:nth-child(1) > img:nth-child(1)"
-    ).attr("src");
-    const synopsis = $(".shorting").text().trim();
+      '.anime-poster > div:nth-child(1) > img:nth-child(1)'
+    ).attr('src');
+    const synopsis = $('.shorting').text().trim();
     var related: Item[] = [];
     $(
-      ".cbox-collapse > div:nth-child(1) > div:nth-child(1) > ul:nth-child(1) > li"
+      '.cbox-collapse > div:nth-child(1) > div:nth-child(1) > ul:nth-child(1) > li'
     ).each(function () {
       var item: Partial<Item> = {};
-      item["id"] = $(this).find("a").attr("href")?.split("/")[2];
-      item["name"] = $(this).find("a").text().trim();
-      item["description"] = $(this).find("span").text().trim();
-      item["imageUrl"] = $(this).find("img").attr("data-src");
-      item["url"] = $(this).find("a").attr("href")?.startsWith("/")
-        ? `${baseUrl}${$(this).find("a").attr("href")}`
-        : $(this).find("a").attr("href");
-      item["type"] = SourceType.Video;
+      item['id'] = $(this).find('a').attr('href')?.split('/')[2];
+      item['name'] = $(this).find('a').text().trim();
+      item['description'] = $(this).find('span').text().trim();
+      item['imageUrl'] = $(this).find('img').attr('data-src');
+      item['url'] = $(this).find('a').attr('href')?.startsWith('/')
+        ? `${baseUrl}${$(this).find('a').attr('href')}`
+        : $(this).find('a').attr('href');
+      item['type'] = SourceType.Video;
       related.push(item as Item);
     });
-    const metaInfos = $(".col1 > div");
+    const metaInfos = $('.col1 > div');
     const description = metaInfos
       .filter(function () {
         return (
-          $(this).find(".item-title").text().trim().toLowerCase() == "type:"
+          $(this).find('.item-title').text().trim().toLowerCase() == 'type:'
         );
       })
-      .find(".item-content")
+      .find('.item-content')
       .text()
       .trim();
     const genres: Genre[] = [];
- 
+
     const genresElement = metaInfos.filter(function () {
       return (
-        $(this).find(".item-title").text().trim().toLowerCase() === "genre:"
+        $(this).find('.item-title').text().trim().toLowerCase() === 'genre:'
       );
     });
 
     if (genresElement.length > 0) {
-      genresElement.find(".item-content > a").each(function () {
-        const href = $(this).attr("href") ?? "";
+      genresElement.find('.item-content > a').each(function () {
+        const href = $(this).attr('href') ?? '';
         const genre: Genre = {
-          id: href.split("/")[2],
+          id: href.split('/')[2],
           name: $(this).text().trim(),
-          url: href.startsWith("/") ? `${baseUrl}${href}` : href,
+          url: href.startsWith('/') ? `${baseUrl}${href}` : href,
           isPaginated: true,
           nextPageNumber: 1,
           previousPageNumber: undefined,
@@ -315,44 +313,44 @@ class NineAnimePlugin implements ContentService {
     let releaseDate;
     const releaseDateElement = metaInfos.filter(function () {
       return (
-        $(this).find(".item-title").text().trim().toLowerCase() == "premiered:"
+        $(this).find('.item-title').text().trim().toLowerCase() == 'premiered:'
       );
     });
     if (releaseDateElement.length > 0) {
-      releaseDate = releaseDateElement.find(".item-content").text().trim();
+      releaseDate = releaseDateElement.find('.item-content').text().trim();
     }
     let rating;
     const ratingElement = metaInfos.filter(function () {
       return (
-        $(this).find(".item-title").text().trim().toLowerCase() == "scores:"
+        $(this).find('.item-title').text().trim().toLowerCase() == 'scores:'
       );
     });
     if (ratingElement.length > 0) {
-      rating = parseFloat(ratingElement.find(".item-content").text().trim());
+      rating = parseFloat(ratingElement.find('.item-content').text().trim());
     }
     let creators;
     const creatorsElement = metaInfos.filter(function () {
       return (
-        $(this).find(".item-title").text().trim().toLowerCase() == "studios:"
+        $(this).find('.item-title').text().trim().toLowerCase() == 'studios:'
       );
     });
     if (creatorsElement.length > 0) {
-      creators = [creatorsElement.find(".item-content").text().trim()];
+      creators = [creatorsElement.find('.item-content').text().trim()];
     }
     let status;
     const statusElement = metaInfos.filter(function () {
       return (
-        $(this).find(".item-title").text().trim().toLowerCase() == "status:"
+        $(this).find('.item-title').text().trim().toLowerCase() == 'status:'
       );
     });
     if (statusElement.length > 0) {
-      status = statusElement.find(".item-content").text().trim();
+      status = statusElement.find('.item-content').text().trim();
     }
-    const otherNames = $(".alias").text().trim().split(", ");
+    const otherNames = $('.alias').text().trim().split(', ');
 
     var episodes: ItemMedia[] = [];
     const episodeResponse = await fetch(
-      `${baseUrl}/ajax/episode/list/${id.split("-")[id.split("-").length - 1]}`
+      `${baseUrl}/ajax/episode/list/${id.split('-')[id.split('-').length - 1]}`
     )
       .then((response) => response)
       .then((data) => data.json());
@@ -361,10 +359,10 @@ class NineAnimePlugin implements ContentService {
         /<a.*?href="([\s\S]*?)"[\s\S]*?title="([\s\S]*?)"[\s\S]*?data-number="([\s\S]*?)"[\s\S]*?data-id="([\s\S]*?)">/g;
       [...episodeResponse.html.matchAll(episodeRegex)].map(function (item) {
         episodes.push({
-          id: item[1].split("/")[2],
+          id: item[1].split('/')[2],
           name: item[2].trim(),
-          url: item[1].startsWith("/") ? `${baseUrl}${item[1]}` : item[1],
-          language: "Unknown",
+          url: item[1].startsWith('/') ? `${baseUrl}${item[1]}` : item[1],
+          language: 'Unknown',
           number: Number(item[3].trim()),
           type: MediaType.RawVideo,
         });
@@ -378,7 +376,7 @@ class NineAnimePlugin implements ContentService {
       imageUrl: imageUrl!,
       url: url,
       type: SourceType.Video,
-      language: "Unknown",
+      language: 'Unknown',
       synopsis: synopsis,
       related: related,
       genres: genres,
@@ -394,7 +392,7 @@ class NineAnimePlugin implements ContentService {
   async getItemMedia(id: string): Promise<ExtractorVideo[]> {
     const baseUrl = this.baseUrl;
     const serversUrl = `${baseUrl}/ajax/episode/servers?episodeId=${
-      id.split("ep=")[1]
+      id.split('ep=')[1]
     }`;
     const serversResponse = await fetch(serversUrl)
       .then((response) => response)
@@ -420,11 +418,11 @@ class NineAnimePlugin implements ContentService {
       if (
         serverResponse.link != null &&
         serverResponse.link != undefined &&
-        serverResponse.link != ""
+        serverResponse.link != ''
       ) {
-        source["type"] = MediaType.ExtractorVideo;
-        source["url"] = serverResponse.link;
-        source["name"] = server.name + " - " + server.language;
+        source['type'] = MediaType.ExtractorVideo;
+        source['url'] = serverResponse.link;
+        source['name'] = server.name + ' - ' + server.language;
         sources.push(source as ExtractorVideo);
       }
     }
@@ -443,7 +441,6 @@ module.exports = {
   getItemMedia: async (id: string): Promise<object[]> =>
     new NineAnimePlugin().getItemMedia(id),
 };
-
 
 // (async () => {
 //   const anime= new NineAnimePlugin();

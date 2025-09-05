@@ -1,8 +1,7 @@
 import Item from './Item';
 import Genre from './Genre';
 import ItemMedia from './ItemMedia';
-import SourceType from '../source/SourceType';
-import {Plugin} from '../Plugin';
+import { Plugin } from '../Plugin';
 
 export interface DetailedItem extends Item {
   language: string;

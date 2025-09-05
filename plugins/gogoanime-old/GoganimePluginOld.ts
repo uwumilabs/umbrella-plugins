@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @ts-nocheck
 // Include ts-nocheck here if using modules that arent builtin to node
 // Also delete any imports from this file. Use require() instead
@@ -6,10 +7,10 @@
 // Actual types are in models/ folder
 // Refer to models/ContentService.ts
 class GogoanimePluginOld {
-  baseUrl = "https://gogoanimes.fi";
+  baseUrl = 'https://gogoanimes.fi';
   // baseUrl = "https://gogoanime.ink";
   //   ajaxUrl = "https://ajax.gogocdn.net";
-  sourceType = "Video";
+  sourceType = 'Video';
   async search(query, page) {
     try {
       var baseUrl = this.baseUrl;
@@ -52,26 +53,26 @@ class GogoanimePluginOld {
       const items = [];
       // @ts-expect-error
       const $ = Cheerio.load(response);
-      $(".items li").each(function () {
+      $('.items li').each(function () {
         var item = {};
-        item["id"] = $(this).find("a").attr("href").split("/")[2];
+        item['id'] = $(this).find('a').attr('href').split('/')[2];
         // throw new Error(`${item["id"]}`);
-        item["name"] = $(this).find(".name a").text().trim();
-        item["description"] = $(`this`).find(".released").text().trim();
-        item["imageUrl"] = $(this).find("img").attr("src").startsWith("/")
-          ? `${baseUrl}${$(this).find("img").attr("src")}`
-          : $(this).find("img").attr("src");
-        item["url"] = $(this).find("a").attr("href").startsWith("/")
-          ? `${baseUrl}${$(this).find("a").attr("href")}`
-          : $(this).find("a").attr("href");
-        item["type"] = "Video";
+        item['name'] = $(this).find('.name a').text().trim();
+        item['description'] = $(`this`).find('.released').text().trim();
+        item['imageUrl'] = $(this).find('img').attr('src').startsWith('/')
+          ? `${baseUrl}${$(this).find('img').attr('src')}`
+          : $(this).find('img').attr('src');
+        item['url'] = $(this).find('a').attr('href').startsWith('/')
+          ? `${baseUrl}${$(this).find('a').attr('href')}`
+          : $(this).find('a').attr('href');
+        item['type'] = 'Video';
         items.push(item);
       });
       return {
-        name: "Gogoanime (Old)",
+        name: 'Gogoanime (Old)',
         description: `Search results for ${query}`,
         url: decodeURIComponent(
-          `${this.baseUrl}/search.html?keyword=${query}&page=${page}`
+          `${this.baseUrl}/search.html?keyword=${query}&page=${page}`,
         ),
         isPaginated: true,
         nextPageNumber: page + 1,
@@ -103,32 +104,32 @@ class GogoanimePluginOld {
     const description = response.match(descriptionRegex)[1].trim();
     const imageUrlRegex = /anime_info_body_bg">[\s\S]*?<img[\s\S]*?src="(.*?)"/;
     var imageUrl = response.match(imageUrlRegex)[1];
-    if (imageUrl.startsWith("/")) {
+    if (imageUrl.startsWith('/')) {
       imageUrl = `${this.baseUrl}/${imageUrl}`;
     }
-    const language = name.includes("(Dub)") ? "English" : "Sub";
+    const language = name.includes('(Dub)') ? 'English' : 'Sub';
     const synopsisRegex = /Synopsis: ([\s\S]*?)<\/div>/;
     var synopsis = response.match(synopsisRegex)[1].trim();
     const openingTagRegex = /<.*?>/g;
-    synopsis = synopsis.replace(openingTagRegex, "");
+    synopsis = synopsis.replace(openingTagRegex, '');
     const closingTagRegex = /<\/.*?>/g;
-    synopsis = synopsis.replace(closingTagRegex, "");
+    synopsis = synopsis.replace(closingTagRegex, '');
     const genres = [];
     const genresElementRegex = /Genre:.*<\/span>[\s\S]*?<\/p>/;
     const genresElement = response.match(genresElementRegex)[0];
     const genresRegex = /<a[\s\S]*?href='(.*?)'[\s\S]*?title='(.*?)'/g;
     const genresList = [...genresElement.matchAll(genresRegex)];
     for (const genre of genresList) {
-      if (genre[1].startsWith("/")) {
+      if (genre[1].startsWith('/')) {
         genre[1] = `${this.baseUrl}/${genre[1]}`;
       }
-      if (genre[1] === "javascript:void(0);") {
+      if (genre[1] === 'javascript:void(0);') {
         continue;
       }
       genres.push({
-        id: genre[1].split("/").pop(),
+        id: genre[1].split('/').pop(),
         name: genre[2],
-        url: genre[1].startsWith("/") ? this.baseUrl + genre[1] : genre[1],
+        url: genre[1].startsWith('/') ? this.baseUrl + genre[1] : genre[1],
       });
     }
     const releaseDateRegex = /Released:[\s\S]*?<\/span>(.*?)<\/p>/;
@@ -136,7 +137,7 @@ class GogoanimePluginOld {
     const statusRegex = /Status:[\s\S]*?title=".*">(.*?)</;
     const status = response.match(statusRegex)[1].trim();
     const ohterNamesRegex = /Other name:[\s\S]*?>([\s\S]*?)</;
-    const otherNames = response.match(ohterNamesRegex)[1].trim().split(",");
+    const otherNames = response.match(ohterNamesRegex)[1].trim().split(',');
     const episodes = [];
     const episodesRegex =
       /<li>[\s\S]*?<a[\s\S]*?href="\/(.*?)"[\s\S]*?span>([\s\S]*?)<\/div[\s\S]*?cate">([\s\S]*?)</g;
@@ -145,13 +146,13 @@ class GogoanimePluginOld {
       episodes.push({
         id: episode[1].trim(),
         name: episode[2]
-          .replace(openingTagRegex, "")
-          .replace(closingTagRegex, "")
+          .replace(openingTagRegex, '')
+          .replace(closingTagRegex, '')
           .trim(),
-        url: this.baseUrl + "/" + episode[1],
-        language: episode[3].trim().toLowerCase() === "dub" ? "English" : "Sub",
+        url: this.baseUrl + '/' + episode[1],
+        language: episode[3].trim().toLowerCase() === 'dub' ? 'English' : 'Sub',
         number: parseInt(
-          episode[2] === "Movie" ? "0" : episode[2].trim().split(" ")[1]
+          episode[2] === 'Movie' ? '0' : episode[2].trim().split(' ')[1],
         ),
       });
     }
@@ -186,8 +187,8 @@ class GogoanimePluginOld {
     const sources = [];
     for (const item of embedInfoList) {
       sources.push({
-        type: "ExtractorVideo",
-        url: item[1].startsWith("//") ? `https:${item[1]}` : item[1],
+        type: 'ExtractorVideo',
+        url: item[1].startsWith('//') ? `https:${item[1]}` : item[1],
         name: item[2].trim(),
       });
     }

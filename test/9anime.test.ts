@@ -1,11 +1,11 @@
-const NineAnimePlugin = require("../plugins/9anime/9animePlugin");
+const NineAnimePlugin = require('../plugins/9anime/9animePlugin');
 // pnpm test test/9anime.test.ts
 jest.setTimeout(120000);
 
-test("returns a filled array of anime list", async () => {
-  const data = await NineAnimePlugin.search("jujutsu kaisen");
+test('returns a filled array of anime list', async () => {
+  const data = await NineAnimePlugin.search('jujutsu kaisen');
   const searchResult = data as { name: string; items: any[] };
-  expect(searchResult.name).toBe("9anime");
+  expect(searchResult.name).toBe('9anime');
   expect(searchResult.items.length).toBeGreaterThan(0);
   const item = searchResult.items[0];
   expect(item.id).toBeDefined();

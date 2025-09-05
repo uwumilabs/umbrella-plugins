@@ -1,4 +1,4 @@
-import {Plugin} from '../Plugin';
+import { Plugin } from '../Plugin';
 import Item from './Item';
 
 export interface Genre {
